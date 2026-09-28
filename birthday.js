@@ -6,7 +6,7 @@
  * ── CONFIG ────────────────────────────────────────────────────────────────
  */
 const BDAY_CONFIG = {
-  BIRTHDAY_DATE : "2026-09-28",   // ← YYYY-MM-DD  change to actual date
+  BIRTHDAY_DATE : "2026-09-29",   // ← YYYY-MM-DD  change to actual date
   NAME          : "My Love: Suryash",      // ← his name or nickname
   VIDEO_URL     : "https://www.youtube.com/watch?v=AsEeyYCG-7Q&list=RDAsEeyYCG-7Q&start_radio=1",             // ← paste your video URL (mp4/youtube embed) or leave ""
   // sessionStorage key — overlay shows once per browser session on birthday date
