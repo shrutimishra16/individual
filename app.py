@@ -17,7 +17,7 @@ YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "AIzaSy")
 
 app = Flask(__name__, static_folder=BASE_DIR, static_url_path="")
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "obsession-secret-key")
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # ── In-memory rooms ────────────────────────────────────────────────────────
 rooms = {}
@@ -355,7 +355,6 @@ def on_disconnect():
 
 
 if __name__ == "__main__":
+    import os
     port = int(os.environ.get("PORT", 5000))
-    print(f"\n  Server:     http://127.0.0.1:{port}")
-    print(f"  Music room: http://127.0.0.1:{port}/music\n")
-    socketio.run(app, host="0.0.0.0", port=port, debug=False)
+    socketio.run(app, host="0.0.0.0", port=port)
