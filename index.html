@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story ❤️</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── Birthday surprise overlay (modular, date-gated) ── -->
+<script src="birthday.js"></script>
+
+<!-- Floating hearts background -->
+<div class="hearts-bg" id="heartsCanvas"></div>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">❤ OBSESSION</div>
+  <nav>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Home</a>
+    <a href="#episodes" onclick="smoothScroll('episodes');return false;">Episodes</a>
+    <a href="#open-when" onclick="smoothScroll('open-when');return false;">Memories</a>
+    <a href="music.html">Music</a>
+  </nav>
+  <div class="nav-right"></div>
+</header>
+
+<!-- Hero Banner -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">❤ NOW STREAMING</div>
+    <h1>OBSESSION</h1>
+    <div class="hero-meta">
+      <span class="match">💕 100% Match</span>
+      <span>2024</span>
+      <span class="rating">18+</span>
+      <span>5 Seasons</span>
+    </div>
+    <p>The most beautiful love story ever told — ours. Every laugh, every glance, every quiet moment between two people who were written in the stars.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-play" onclick="showEpisode('Our Story Begins','Once upon a time, two hearts found each other in this big world. And nothing was ever the same again. ❤️')">▶ Play</button>
+      <button class="btn btn-info" onclick="showEpisode('About Our Story','This is a limited series about the greatest love story ever told — yours and mine. Every episode is a memory, every season a chapter of us.')">ℹ More Info</button>
+    </div>
+  </div>
+</section>
+<div class="hero-fade"></div>
+
+<!-- ═══════════════════════ EPISODES ═══════════════════════ -->
+<section class="section" id="episodes">
+  <h2>Season 1 — How We Met</h2>
+  <div class="cards">
+    <div class="card" onclick="showEpisode('First Message','This is where it all began. A single message that changed everything. You probably had no idea what you were starting. ❤️')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S1 · E1</span>
+        <span class="card-title">First Message</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>The first hello that started everything.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('First Call','The first long conversation that went way past midnight. Neither of you wanted to hang up.')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S1 · E2</span>
+        <span class="card-title">First Call</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>Hours felt like minutes.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('First Date','A day worth replaying forever. Every detail was perfect, even the nervous parts. 🌹')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S1 · E3</span>
+        <span class="card-title">First Date</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>Butterflies and smiles all around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Season 2 — Falling For Each Other</h2>
+  <div class="cards">
+    <div class="card" onclick="showEpisode('Inside Jokes','The jokes nobody else understands. The ones that make you both burst out laughing at the wrong moment. 😄')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S2 · E1</span>
+        <span class="card-title">Inside Jokes</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>Your own private language.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('Cute Moments','Tiny moments that felt huge. A look, a touch, a smile that said everything without a single word. 💕')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S2 · E2</span>
+        <span class="card-title">Cute Moments</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>Small details, big memories.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('The Confession','The moment everything became real. Hearts racing, hands trembling, three words that changed the world. ❤️')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S2 · E3</span>
+        <span class="card-title">The Confession</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>I love you. There, I said it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Season 5 — The Future</h2>
+  <div class="cards">
+    <div class="card" onclick="showEpisode('Wedding Day','One day this becomes real. The best day of our lives, surrounded by everyone we love. 💍')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S5 · E1</span>
+        <span class="card-title">Wedding Day</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>I do. Now and forever.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('Our Home','A cozy place filled with warmth, love, and the soft glow of a life built together. 🏠')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S5 · E2</span>
+        <span class="card-title">Our Home</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>Where love lives.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('Future Kid','The funniest, most chaotic, most wonderful family member yet to arrive. 👶')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">S5 · E3</span>
+        <span class="card-title">Little One</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>The newest chapter.</p>
+      </div>
+    </div>
+    <div class="card" onclick="showEpisode('To Be Continued...','Our story never really ends. Every day is a new episode, and I cannot wait to live them all with you. ❤️')">
+      <img class="card-bg" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&q=60" alt="">
+      <div class="card-overlay">
+        <span class="card-ep">FINALE</span>
+        <span class="card-title">To Be Continued…</span>
+      </div>
+      <div class="card-hover-info">
+        <button class="play-btn">▶</button>
+        <p>The story never ends.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ OPEN WHEN ═══════════════════════ -->
+<section class="section open-when-section" id="open-when">
+  <div class="open-when-header">
+    <h2>Open When…</h2>
+    <p class="open-when-sub">Little letters for every kind of moment. Open the one you need right now.</p>
+  </div>
+  <div class="letter-grid">
+    <div class="letter-card" onclick="showMessage('When You Miss Me','No matter how far apart we are, close your eyes and know that I am thinking of you. You are never truly alone. ❤️')">
+      <div class="letter-icon">💌</div>
+      <div class="letter-body">
+        <span class="letter-tag">OPEN WHEN</span>
+        <h3>You Miss Me</h3>
+        <p>For when distance feels too heavy.</p>
+      </div>
+      <div class="letter-arrow">→</div>
+    </div>
+    <div class="letter-card" onclick="showMessage('When You Are Sad','You have survived every single difficult day so far. Your strength is real, your heart is brave. I believe in you completely. 🌸')">
+      <div class="letter-icon">🌸</div>
+      <div class="letter-body">
+        <span class="letter-tag">OPEN WHEN</span>
+        <h3>You Are Sad</h3>
+        <p>For the harder moments.</p>
+      </div>
+      <div class="letter-arrow">→</div>
+    </div>
+    <div class="letter-card" onclick="showMessage('When You Need Motivation','You are more capable than you know. The world is better with you in it giving your everything. Go get it. 💪')">
+      <div class="letter-icon">💪</div>
+      <div class="letter-body">
+        <span class="letter-tag">OPEN WHEN</span>
+        <h3>You Need Motivation</h3>
+        <p>Your personal cheer squad.</p>
+      </div>
+      <div class="letter-arrow">→</div>
+    </div>
+    <div class="letter-card" onclick="showMessage('When You Want To Smile','Remember that one thing you did that was so embarrassing you still cringe? Yeah. I love that about you. 😂❤️')">
+      <div class="letter-icon">😊</div>
+      <div class="letter-body">
+        <span class="letter-tag">OPEN WHEN</span>
+        <h3>You Want To Smile</h3>
+        <p>Instant smiles, guaranteed.</p>
+      </div>
+      <div class="letter-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" class="modal" onclick="closeModalOutside(event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="episode-tag">❤ OUR STORY</div>
+      <button class="close" onclick="closeModal()">✕</button>
+      <h2 id="title"></h2>
+    </div>
+    <div class="modal-body">
+      <p id="content"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-watch" onclick="closeModal()">▶ Watch Now</button>
+      <button class="btn-sm btn-list" onclick="closeModal()">+ My List</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
