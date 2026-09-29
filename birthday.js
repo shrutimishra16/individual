@@ -356,13 +356,13 @@ const BDAY_CONFIG = {
   <!-- SLIDE 4 (or 3 if no video): After video / okay ready -->
   <div class="bday-slide" id="bday-s${hasVideo ? 4 : 3}">
     <div style="font-size:clamp(3rem,12vw,7rem);animation:bdayCakeBounce 1s ease infinite alternate;display:block;margin-bottom:16px">🥰</div>
-    <div class="bday-hey" style="font-size:clamp(1.4rem,5vw,2.6rem)">Okay... now you're ready.</div>
-    <div class="bday-sub" style="margin-top:10px">Get ready to see what I built just for you.</div>
+    <div class="bday-hey" style="font-size:clamp(1.4rem,5vw,2.6rem)">Okay... now that you seem to be ready.</div>
+    <div class="bday-sub" style="margin-top:10px">Get ready to witness what I and kiro built just for you.</div>
   </div>
 
   <!-- SLIDE 5 (or 4): Ready? interaction -->
   <div class="bday-slide" id="bday-s${hasVideo ? 5 : 4}">
-    <div class="bday-question">Are you excited</div>
+    <div class="bday-question">Are you excited (Please be)</div>
     <div class="bday-choice-btns">
       <button class="bday-choice yes" id="bday-yes">YES ❤️</button>
       <button class="bday-choice obv" id="bday-obv">Obviously 😌</button>
