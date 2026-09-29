@@ -8,14 +8,29 @@
 const BDAY_CONFIG = {
   BIRTHDAY_DATE : "2026-09-29",   // ← YYYY-MM-DD  change to actual date
   NAME          : "My Love: Suryash",      // ← his name or nickname
-  VIDEO_URL     : "https://www.youtube.com/watch?v=AsEeyYCG-7Q&list=RDAsEeyYCG-7Q&start_radio=1",             // ← paste your video URL (mp4/youtube embed) or leave ""
+  VIDEO_URL     : "https://www.youtube.com/watch?v=AsEeyYCG-7Q",  // ← YouTube watch or embed URL
   // sessionStorage key — overlay shows once per browser session on birthday date
-  STORAGE_KEY   : "bday_seen_2025",
+  STORAGE_KEY   : "bday_seen_2026",
 };
 /* ─────────────────────────────────────────────────────────────────────── */
 
 (function () {
   "use strict";
+
+  /* ── Helper: convert any YouTube URL to embed URL ── */
+  function toEmbedUrl(url) {
+    if (!url) return "";
+    // already an embed URL
+    if (url.includes("youtube.com/embed/")) return url;
+    // extract video id from watch or youtu.be URLs
+    let vid = null;
+    const watchMatch = url.match(/[?&]v=([\w-]{11})/);
+    const shortMatch = url.match(/youtu\.be\/([\w-]{11})/);
+    if (watchMatch) vid = watchMatch[1];
+    else if (shortMatch) vid = shortMatch[1];
+    if (vid) return `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+    return url; // fallback as-is
+  }
 
   /* ── 1. Date check ── */
   function isBirthday() {
@@ -26,8 +41,10 @@ const BDAY_CONFIG = {
            today.getDate()       === d;
   }
 
-  if (!isBirthday()) return;                          // not the day — skip
-  if (sessionStorage.getItem(BDAY_CONFIG.STORAGE_KEY)) return; // already seen this session
+  // Add ?bday=1 to URL to force-open the overlay any day (for testing/preview)
+  const forceBday = new URLSearchParams(location.search).has("bday");
+
+  if (!forceBday && !isBirthday()) return;           // not the day — skip
 
   /* ── 2. Block body scroll while overlay is up ── */
   document.documentElement.style.overflow = "hidden";
@@ -325,7 +342,7 @@ const BDAY_CONFIG = {
     <div class="bday-video-label">First... a little message from me to you ❤️</div>
     <div class="bday-video-wrap" id="bday-vwrap">
       ${BDAY_CONFIG.VIDEO_URL.includes("youtube") || BDAY_CONFIG.VIDEO_URL.includes("youtu.be")
-        ? `<iframe src="${BDAY_CONFIG.VIDEO_URL}" allow="autoplay; fullscreen" allowfullscreen></iframe>`
+        ? `<iframe src="${toEmbedUrl(BDAY_CONFIG.VIDEO_URL)}" allow="autoplay; fullscreen" allowfullscreen></iframe>`
         : `<video id="bday-vid" src="${BDAY_CONFIG.VIDEO_URL}" playsinline></video>
            <div class="bday-play-overlay" id="bday-play-overlay">
              <div class="bday-play-circle">&#9654;</div>
@@ -454,7 +471,6 @@ const BDAY_CONFIG = {
   /* ── Enter button ── */
   document.getElementById("bday-enter").addEventListener("click", () => {
     burstConfetti(120);
-    sessionStorage.setItem(BDAY_CONFIG.STORAGE_KEY, "1");
     overlay.classList.add("fade-out");
     setTimeout(() => {
       overlay.remove();
