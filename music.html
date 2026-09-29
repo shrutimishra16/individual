@@ -53,7 +53,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#0d0d0d; color:#e5e5e
 .ms-btn-primary:hover { background:#b0001f; }
 .ms-btn-secondary { min-height:42px; border-radius:8px; border:1px solid rgba(255,255,255,.14)!important; padding:9px 20px; font:inherit; font-size:.9rem; font-weight:700; cursor:pointer; background:rgba(255,255,255,.07); color:#ddd; transition:all .2s; }
 .ms-btn-secondary:hover { background:rgba(255,255,255,.14); }
-.ms-full { width:100%; margin-top:8px; }
 
 /* status bar */
 .ms-status-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
@@ -67,35 +66,38 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#0d0d0d; color:#e5e5e
 .ms-code-box strong { font-size:19px; letter-spacing:.12em; color:#fff; display:block; }
 .ms-code-box .code-hint { display:block; font-size:9px; color:#443344; margin-top:3px; }
 
-/* ── Audio player card ── */
+/* player card */
 .player-card {
   background:linear-gradient(135deg,#1a0a0f,#181218);
   border:1px solid rgba(229,0,48,.2);
   border-radius:16px;
   padding:24px;
   margin-bottom:16px;
-  text-align:center;
 }
-.player-art {
-  width:180px; height:180px;
-  border-radius:12px;
-  object-fit:cover;
-  margin:0 auto 18px;
-  display:block;
-  background:#111;
-  box-shadow:0 8px 40px rgba(229,0,48,.2);
-}
-.player-title { font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.player-channel { font-size:.82rem; color:#554455; margin-bottom:20px; }
-.player-loading { font-size:.82rem; color:#ff6b8a; min-height:18px; margin-bottom:10px; }
 
-/* progress bar */
-.progress-wrap { position:relative; height:4px; background:rgba(255,255,255,.08); border-radius:2px; margin-bottom:16px; cursor:pointer; }
-.progress-fill { height:100%; background:#e50030; border-radius:2px; width:0%; transition:width .5s linear; pointer-events:none; }
-.progress-time { display:flex; justify-content:space-between; font-size:.75rem; color:#443344; margin-top:6px; }
+/* YouTube IFrame wrapper — hidden but active */
+.yt-wrap {
+  position:relative;
+  width:100%;
+  border-radius:10px;
+  overflow:hidden;
+  background:#000;
+  margin-bottom:18px;
+  aspect-ratio:16/9;
+}
+.yt-wrap iframe {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+.player-title { font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; }
+.player-loading { font-size:.82rem; color:#ff6b8a; min-height:18px; margin-bottom:10px; text-align:center; }
 
 /* control buttons */
-.ctrl-buttons { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:18px; }
+.ctrl-buttons { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:14px; }
 .ctrl-btn { width:46px; height:46px; border-radius:10px; background:rgba(255,255,255,.07); color:#ddd; border:1px solid rgba(255,255,255,.12)!important; font-size:1rem; cursor:pointer; transition:all .2s; }
 .ctrl-btn:hover { background:rgba(255,255,255,.15); }
 .ctrl-play { width:62px; height:62px; border-radius:50%; background:#e50030; color:#fff; font-size:1.4rem; border:none!important; box-shadow:0 4px 24px rgba(229,0,48,.5); cursor:pointer; transition:all .2s; }
@@ -150,14 +152,6 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 .back-to-home { display:inline-flex; align-items:center; gap:8px; color:#443344; text-decoration:none; font-size:.85rem; margin-bottom:28px; transition:color .2s; }
 .back-to-home:hover { color:#ccc; }
 
-/* wake lock */
-.wake-wrap { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); margin-bottom:14px; }
-.wake-wrap p { font-size:.78rem; color:#443344; flex:1; line-height:1.5; }
-.wake-wrap p strong { color:#888; }
-#btn-wake-lock { padding:5px 12px; font-size:.75rem; font-weight:700; border-radius:6px; border:1px solid rgba(229,0,48,.3)!important; background:transparent; color:#ff6b8a; cursor:pointer; white-space:nowrap; transition:all .2s; }
-#btn-wake-lock:hover { background:rgba(229,0,48,.1); }
-#btn-wake-lock.on { background:rgba(229,0,48,.15); color:#fff; border-color:rgba(229,0,48,.6)!important; }
-
 @media (max-width:600px) {
   .music-page { padding:90px 18px 60px; }
   .navbar { padding:14px 18px; }
@@ -166,7 +160,6 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
   .ms-panel { padding:18px; }
   .result-thumb { width:56px; height:32px; }
   .result-actions { flex-direction:column; gap:4px; }
-  .player-art { width:140px; height:140px; }
 }
 </style>
 </head>
@@ -184,12 +177,9 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
   </nav>
 </header>
 
-<!-- hidden audio element — plays the yt-dlp extracted stream -->
-<audio id="audio-player" preload="none"></audio>
-
 <main class="music-page">
 
-  <a class="back-to-home" href="index.html">Back to Our Story</a>
+  <a class="back-to-home" href="index.html">← Back to Our Story</a>
 
   <div class="music-hero">
     <h1>Our Music Space</h1>
@@ -217,8 +207,8 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
   <!-- ROOM PANEL -->
   <div id="ms-room-panel" class="ms-hidden">
-
     <div class="ms-panel">
+
       <div class="ms-room-header">
         <div>
           <p class="ms-eyebrow">OUR MUSIC ROOM</p>
@@ -237,25 +227,15 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
         <span id="ms-dj-status">DJ: —</span>
       </div>
 
-      <!-- keep screen on -->
-      <div class="wake-wrap">
-        <p><strong>Background playback:</strong> audio keeps playing even with screen off. Tap to prevent screen sleep.</p>
-        <button id="btn-wake-lock">Keep screen on</button>
-      </div>
-
-      <!-- Audio player card -->
+      <!-- Player card -->
       <div class="player-card">
-        <img id="player-art" class="player-art" src="" alt="">
+        <div id="dj-banner" class="dj-banner ms-hidden"></div>
         <div class="player-title" id="player-title">No song loaded</div>
-        <div class="player-channel" id="player-channel"></div>
         <div class="player-loading" id="player-loading"></div>
 
-        <div class="progress-wrap" id="progress-wrap">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-time">
-          <span id="time-current">0:00</span>
-          <span id="time-total">0:00</span>
+        <!-- YouTube IFrame lives here -->
+        <div class="yt-wrap">
+          <div id="yt-player"></div>
         </div>
 
         <div class="ctrl-buttons">
@@ -265,8 +245,9 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
         </div>
 
         <div class="volume-row">
-          <span>Vol</span>
-          <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.02" value="1">
+          <span>🔈</span>
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" step="1" value="100">
+          <span>🔊</span>
         </div>
 
         <p id="ms-ctrl-msg" class="ms-muted" style="margin-top:12px;text-align:center;min-height:16px"></p>
@@ -274,8 +255,6 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
       <!-- Search & Queue -->
       <div class="ms-panel" style="margin-bottom:0">
-        <div id="dj-banner" class="dj-banner ms-hidden"></div>
-
         <p class="ms-eyebrow">SEARCH & QUEUE</p>
         <h3>Find a song</h3>
         <p class="ms-muted" style="margin-bottom:12px">Search by name or artist. Either person can play or queue songs.</p>
@@ -295,12 +274,16 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
       <button class="ms-leave-btn" id="ms-leave-btn">Leave Room</button>
     </div>
-
   </div>
 
 </main>
 
+<!-- Socket.IO -->
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+<!-- YouTube IFrame API — must load AFTER socket.io -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
 // ── Floating hearts ────────────────────────────────────────────────────────
 (function () {
@@ -320,22 +303,6 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
   }
   setInterval(spawn, 1300);
   for (let i = 0; i < 7; i++) spawn();
-})();
-
-// ── Wake Lock ──────────────────────────────────────────────────────────────
-(function () {
-  let wl = null;
-  const btn = document.getElementById('btn-wake-lock');
-  if (!('wakeLock' in navigator)) { btn.textContent = 'Not supported'; btn.disabled = true; return; }
-  async function req() {
-    try {
-      wl = await navigator.wakeLock.request('screen');
-      btn.textContent = 'Screen staying on'; btn.classList.add('on');
-      wl.addEventListener('release', () => { btn.textContent = 'Keep screen on'; btn.classList.remove('on'); wl = null; });
-    } catch(e) {}
-  }
-  btn.addEventListener('click', () => { wl ? (wl.release(), wl=null, btn.textContent='Keep screen on', btn.classList.remove('on')) : req(); });
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='visible' && btn.classList.contains('on')) req(); });
 })();
 
 // ── Search ─────────────────────────────────────────────────────────────────
@@ -360,14 +327,15 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
           <div class="result-channel">${esc(it.channel)}</div>
         </div>
         <div class="result-actions">
-          <button class="btn-play-now" data-vid="${esc(it.video_id)}" data-title="${esc(it.title)}">Play</button>
+          <button class="btn-play-now" data-vid="${esc(it.video_id)}" data-title="${esc(it.title)}">▶ Play</button>
           <button class="btn-add-q"    data-vid="${esc(it.video_id)}" data-title="${esc(it.title)}">+ Queue</button>
         </div>
       </div>`).join('');
+
     resEl.querySelectorAll('.btn-play-now').forEach(b =>
-      b.addEventListener('click', () => window._room.load(b.dataset.vid, b.dataset.title)));
+      b.addEventListener('click', () => window._room && window._room.load(b.dataset.vid, b.dataset.title)));
     resEl.querySelectorAll('.btn-add-q').forEach(b =>
-      b.addEventListener('click', () => window._room.queue(b.dataset.vid, b.dataset.title)));
+      b.addEventListener('click', () => window._room && window._room.queue(b.dataset.vid, b.dataset.title)));
   }
 
   async function search(q) {
@@ -392,19 +360,21 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
     if (!q) { resEl.innerHTML = ''; return; }
     timer = setTimeout(() => search(q), 500);
   });
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(timer); search(input.value.trim()); } });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { clearTimeout(timer); search(input.value.trim()); }
+  });
 })();
 
-// ── Music room ─────────────────────────────────────────────────────────────
+// ── Music Room ─────────────────────────────────────────────────────────────
 (function () {
   const $ = id => document.getElementById(id);
-  const audio = $('audio-player');
 
   let socket = null, joined = false, roomId = '', myName = '', isDJ = false;
   let applyingRemote = false, heartbeatTimer = null, syncTimer = null;
-  let currentVideoId = '', loadingVid = '';
+  let ytPlayer = null, ytReady = false;
+  let currentVideoId = '';
 
-  // ── UI helpers ──
+  // ── helpers ──
   function setErr(m)  { $('ms-join-error').textContent = m || ''; }
   function setCtrl(m) { $('ms-ctrl-msg').textContent   = m || ''; }
 
@@ -413,94 +383,25 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
       .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   }
 
-  function fmt(s) {
-    s = Math.max(0, Math.floor(s || 0));
-    return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+  function setPlayBtn(playing, loading) {
+    const btn = $('ms-play-btn');
+    if (loading) { btn.innerHTML = '⏳'; btn.classList.add('loading'); }
+    else { btn.innerHTML = playing ? '⏸' : '▶'; btn.classList.remove('loading'); }
   }
 
   function updateDJUI(djName) {
-    $('ms-dj-status').textContent = 'DJ: ' + (djName || 'Nobody');
+    $('ms-dj-status').textContent = '🎧 DJ: ' + (djName || 'Nobody');
     const b = $('dj-banner');
     b.classList.remove('ms-hidden');
     b.textContent = isDJ
-      ? 'You are controlling playback for everyone.'
-      : (djName || 'Someone') + ' is the DJ. Play a song to take control.';
+      ? '🎧 You are controlling playback for everyone.'
+      : '🎧 ' + (djName || 'Someone') + ' is the DJ. Play a song to take control.';
   }
 
-  function setPlayBtn(playing, loading) {
-    const btn = $('ms-play-btn');
-    if (loading) { btn.innerHTML = '&#9679;'; btn.classList.add('loading'); }
-    else { btn.innerHTML = playing ? '&#9646;&#9646;' : '&#9654;'; btn.classList.remove('loading'); }
-  }
-
-  function updateProgress() {
-    if (!audio.duration) return;
-    const pct = (audio.currentTime / audio.duration) * 100;
-    $('progress-fill').style.width = pct + '%';
-    $('time-current').textContent = fmt(audio.currentTime);
-    $('time-total').textContent   = fmt(audio.duration);
-  }
-
-  // ── Load audio via /api/stream/<vid> ──
-  function loadAudio(videoId, startAt, autoplay) {
-    if (!videoId) return;
-    currentVideoId = videoId;
-    loadingVid = videoId;
-    $('player-loading').textContent = 'Loading audio…';
-    setPlayBtn(false, true);
-
-    // Update art
-    $('player-art').src = 'https://img.youtube.com/vi/' + videoId + '/mqdefault.jpg';
-
-    // Set audio src to our proxy endpoint — Flask calls yt-dlp and redirects to stream URL
-    audio.src = '/api/stream/' + videoId;
-    audio.load();
-
-    audio.oncanplay = () => {
-      if (loadingVid !== videoId) return; // stale
-      $('player-loading').textContent = '';
-      setPlayBtn(autoplay, false);
-      if (startAt > 0) audio.currentTime = startAt;
-      if (autoplay) audio.play().catch(() => {});
-      loadingVid = '';
-    };
-
-    audio.onerror = () => {
-      if (loadingVid !== videoId) return;
-      $('player-loading').textContent = 'Could not load. Skipping…';
-      setPlayBtn(false, false);
-      loadingVid = '';
-      // Auto-skip
-      if (joined && socket) {
-        setTimeout(() => {
-          grabDJ();
-          socket.emit('control', { room_id: roomId, action: 'next', position: 0 });
-        }, 1500);
-      }
-    };
-  }
-
-  // ── Apply server state ──
-  function applyState(state) {
-    if (!state) return;
-    $('player-title').textContent = state.title || 'No song loaded';
-    renderQueue(state.queue || []);
-    if (state.dj_sid !== undefined && socket) isDJ = state.dj_sid === socket.id;
-
-    if (!state.video_id) return;
-
-    const targetPos = Number(state.position) || 0;
-
-    if (state.video_id !== currentVideoId) {
-      applyingRemote = true;
-      loadAudio(state.video_id, targetPos, state.playing);
-      setTimeout(() => { applyingRemote = false; }, 2000);
-    } else {
-      const diff = Math.abs((audio.currentTime || 0) - targetPos);
-      if (diff > 1.5) audio.currentTime = targetPos;
-      if (state.playing && audio.paused)  audio.play().catch(()=>{});
-      if (!state.playing && !audio.paused) audio.pause();
-      setPlayBtn(state.playing, false);
+  function grabDJ() {
+    if (!isDJ && socket && joined) {
+      isDJ = true;
+      socket.emit('take_control', { room_id: roomId });
     }
   }
 
@@ -518,21 +419,96 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
       </div>`).join('');
   }
 
-  function grabDJ() {
-    if (!isDJ && socket && joined) {
-      isDJ = true;
-      socket.emit('take_control', { room_id: roomId });
+  // ── YouTube IFrame API ──
+  // onYouTubeIframeAPIReady is called automatically by the YT script
+  window.onYouTubeIframeAPIReady = function () {
+    ytReady = true;
+    ytPlayer = new YT.Player('yt-player', {
+      width: '100%',
+      height: '100%',
+      videoId: '',
+      playerVars: {
+        playsinline: 1,
+        controls: 1,      // show native YT controls inside the frame
+        rel: 0,
+        modestbranding: 1,
+        origin: location.origin
+      },
+      events: {
+        onReady: () => {
+          // If we joined a room before the player was ready, catch up now
+          if (joined && socket) socket.emit('request_state', { room_id: roomId });
+        },
+        onStateChange: (event) => {
+          if (!joined || applyingRemote || !isDJ) return;
+          if (event.data === YT.PlayerState.PLAYING) {
+            setPlayBtn(true, false);
+            socket.emit('control', { room_id: roomId, action: 'play', position: ytPlayer.getCurrentTime() });
+          } else if (event.data === YT.PlayerState.PAUSED) {
+            setPlayBtn(false, false);
+            socket.emit('control', { room_id: roomId, action: 'pause', position: ytPlayer.getCurrentTime() });
+          } else if (event.data === YT.PlayerState.ENDED) {
+            socket.emit('control', { room_id: roomId, action: 'next', position: 0 });
+          } else if (event.data === YT.PlayerState.BUFFERING) {
+            $('player-loading').textContent = 'Buffering…';
+          }
+          if (event.data === YT.PlayerState.PLAYING) $('player-loading').textContent = '';
+        },
+        onError: () => {
+          $('player-loading').textContent = 'Playback error — song may be unavailable.';
+          setPlayBtn(false, false);
+        }
+      }
+    });
+  };
+
+  // ── Apply state from server ──
+  function applyState(state) {
+    if (!state) return;
+    $('player-title').textContent = state.title || 'No song loaded';
+    renderQueue(state.queue || []);
+    if (state.dj_sid !== undefined && socket) {
+      isDJ = state.dj_sid === socket.id;
     }
+    updateDJUI(state.dj_name);
+
+    if (!state.video_id || !ytPlayer || !ytReady) return;
+
+    const targetPos = Number(state.position) || 0;
+    applyingRemote = true;
+
+    if (state.video_id !== currentVideoId) {
+      currentVideoId = state.video_id;
+      $('player-loading').textContent = 'Loading…';
+      setPlayBtn(false, true);
+      if (state.playing) {
+        ytPlayer.loadVideoById({ videoId: state.video_id, startSeconds: targetPos });
+      } else {
+        ytPlayer.cueVideoById({ videoId: state.video_id, startSeconds: targetPos });
+        setPlayBtn(false, false);
+        $('player-loading').textContent = '';
+      }
+    } else {
+      const diff = Math.abs((ytPlayer.getCurrentTime() || 0) - targetPos);
+      if (diff > 1.5) ytPlayer.seekTo(targetPos, true);
+      if (state.playing && ytPlayer.getPlayerState() !== YT.PlayerState.PLAYING) ytPlayer.playVideo();
+      if (!state.playing && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+      setPlayBtn(state.playing, false);
+      $('player-loading').textContent = '';
+    }
+
+    setTimeout(() => { applyingRemote = false; }, 1000);
   }
 
   function startLoops() {
     clearInterval(heartbeatTimer); clearInterval(syncTimer);
     heartbeatTimer = setInterval(() => {
-      if (!joined || !isDJ || !socket) return;
+      if (!joined || !isDJ || !socket || !ytPlayer || !ytReady) return;
+      const playing = ytPlayer.getPlayerState() === YT.PlayerState.PLAYING;
       socket.emit('heartbeat', {
         room_id: roomId,
-        position: audio.currentTime || 0,
-        playing: !audio.paused
+        position: ytPlayer.getCurrentTime() || 0,
+        playing
       });
     }, 2000);
     syncTimer = setInterval(() => {
@@ -548,12 +524,78 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
   function leaveRoom() {
     clearInterval(heartbeatTimer); clearInterval(syncTimer);
-    audio.pause(); audio.src = '';
+    if (ytPlayer && ytReady) ytPlayer.stopVideo();
     if (socket) { socket.disconnect(); socket = null; }
     joined = false; isDJ = false; roomId = ''; myName = ''; currentVideoId = '';
     $('ms-room-panel').classList.add('ms-hidden');
     $('ms-join-panel').classList.remove('ms-hidden');
     setErr(''); $('ms-room').value = '';
+  }
+
+  // ── Socket setup ──
+  function initSocket(onReady) {
+    if (socket) {
+      if (socket.connected) { onReady(); return; }
+      socket.once('connect', onReady); return;
+    }
+    setErr('Connecting…');
+    socket = io({ transports: ['websocket', 'polling'] });
+
+    socket.on('connect', () => {
+      $('ms-conn-status').textContent = '🟢 Connected';
+      setErr('');
+      onReady();
+    });
+    socket.on('connect_error', () => {
+      setErr('Cannot reach server.');
+      $('ms-conn-status').textContent = '🔴 Disconnected';
+    });
+    socket.on('disconnect', () => {
+      $('ms-conn-status').textContent = '🔴 Disconnected';
+    });
+
+    socket.on('room_created', data => {
+      roomId = data.room_id;
+      $('ms-room').value = roomId;
+      socket.emit('join_room_request', { room_id: roomId, name: myName });
+    });
+
+    socket.on('room_error', data => setErr(data.message));
+
+    socket.on('joined', data => {
+      joined = true; roomId = data.room_id; isDJ = data.is_dj;
+      showRoom(roomId);
+      if (data.state) applyState(data.state);
+      socket.emit('request_state', { room_id: roomId });
+      startLoops();
+    });
+
+    socket.on('state', applyState);
+
+    socket.on('sync_tick', data => {
+      if (!joined || !ytPlayer || !ytReady) return;
+      if (data.video_id && data.video_id !== currentVideoId) {
+        socket.emit('request_state', { room_id: roomId }); return;
+      }
+      const diff = Math.abs((ytPlayer.getCurrentTime() || 0) - (Number(data.position) || 0));
+      applyingRemote = true;
+      if (diff > 1.5) ytPlayer.seekTo(Number(data.position), true);
+      if (data.playing  && ytPlayer.getPlayerState() !== YT.PlayerState.PLAYING) ytPlayer.playVideo();
+      if (!data.playing && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING)  ytPlayer.pauseVideo();
+      setPlayBtn(data.playing, false);
+      setTimeout(() => { applyingRemote = false; }, 500);
+    });
+
+    socket.on('presence', data => {
+      $('ms-presence').textContent = '👥 ' + data.user_count + (data.user_count === 1 ? ' person' : ' people');
+      updateDJUI(data.dj_name);
+    });
+
+    socket.on('dj_changed', data => {
+      isDJ = data.dj_sid === socket.id;
+      updateDJUI(data.dj_name);
+      setCtrl(isDJ ? '🎧 You now control playback.' : data.dj_name + ' is the DJ.');
+    });
   }
 
   // ── Copy room link ──
@@ -569,118 +611,12 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
       .catch(() => prompt('Share this link:', url));
   });
 
-  // ── Audio events → broadcast if DJ ──
-  audio.addEventListener('timeupdate', () => {
-    updateProgress();
+  // ── Volume slider ──
+  $('volume-slider').addEventListener('input', e => {
+    if (ytPlayer && ytReady) ytPlayer.setVolume(Number(e.target.value));
   });
 
-  audio.addEventListener('play', () => {
-    if (applyingRemote) return;
-    setPlayBtn(true, false);
-    if (joined && isDJ && socket)
-      socket.emit('control', { room_id: roomId, action: 'play', position: audio.currentTime });
-  });
-
-  audio.addEventListener('pause', () => {
-    if (applyingRemote) return;
-    setPlayBtn(false, false);
-    if (joined && isDJ && socket)
-      socket.emit('control', { room_id: roomId, action: 'pause', position: audio.currentTime });
-  });
-
-  audio.addEventListener('ended', () => {
-    if (!joined || !socket) return;
-    grabDJ();
-    socket.emit('control', { room_id: roomId, action: 'next', position: 0 });
-  });
-
-  // Progress bar seek
-  $('progress-wrap').addEventListener('click', e => {
-    if (!audio.duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pct  = (e.clientX - rect.left) / rect.width;
-    const pos  = pct * audio.duration;
-    audio.currentTime = pos;
-    if (joined && isDJ && socket)
-      socket.emit('control', { room_id: roomId, action: 'seek', position: pos });
-  });
-
-  // Volume
-  $('volume-slider').addEventListener('input', e => { audio.volume = e.target.value; });
-
-  // ── Socket ──
-  function initSocket(onReady) {
-    if (socket) {
-      if (socket.connected) { onReady(); return; }
-      socket.once('connect', onReady); return;
-    }
-    setErr('Connecting…');
-    socket = io({ transports: ['websocket', 'polling'] });
-
-    socket.on('connect', () => { $('ms-conn-status').textContent = 'Connected'; setErr(''); onReady(); });
-    socket.on('connect_error', () => { setErr('Cannot reach server. Run: python app.py'); $('ms-conn-status').textContent = 'Disconnected'; });
-    socket.on('disconnect', () => { $('ms-conn-status').textContent = 'Disconnected'; });
-
-    socket.on('room_created', data => {
-      roomId = data.room_id; $('ms-room').value = roomId;
-      socket.emit('join_room_request', { room_id: roomId, name: myName });
-    });
-
-    socket.on('room_error', data => setErr(data.message));
-
-    socket.on('joined', data => {
-      joined = true; roomId = data.room_id; isDJ = data.is_dj;
-      showRoom(roomId);
-      if (data.state) { updateDJUI(data.state.dj_name || (isDJ ? myName : '')); applyState(data.state); }
-      socket.emit('request_state', { room_id: roomId });
-      startLoops();
-    });
-
-    socket.on('state', applyState);
-
-    socket.on('sync_tick', data => {
-      if (!joined) return;
-      if (data.video_id && data.video_id !== currentVideoId) {
-        // Different song — full state fetch
-        socket.emit('request_state', { room_id: roomId }); return;
-      }
-      const diff = Math.abs((audio.currentTime||0) - (Number(data.position)||0));
-      applyingRemote = true;
-      if (diff > 1.5) audio.currentTime = Number(data.position);
-      if (data.playing  && audio.paused)  audio.play().catch(()=>{});
-      if (!data.playing && !audio.paused) audio.pause();
-      setPlayBtn(data.playing, false);
-      setTimeout(() => { applyingRemote = false; }, 500);
-    });
-
-    socket.on('presence', data => {
-      $('ms-presence').textContent = data.user_count + (data.user_count === 1 ? ' person' : ' people');
-      updateDJUI(data.dj_name);
-    });
-
-    socket.on('dj_changed', data => {
-      isDJ = data.dj_sid === socket.id;
-      updateDJUI(data.dj_name);
-      setCtrl(isDJ ? 'You now control playback.' : data.dj_name + ' is the DJ.');
-    });
-  }
-
-  // ── Exposed to search buttons ──
-  window._room = {
-    load(vid, title) {
-      if (!joined) { setCtrl('Join a room first.'); return; }
-      grabDJ();
-      socket.emit('control', { room_id: roomId, action: 'load', video_id: vid, title, position: 0 });
-    },
-    queue(vid, title) {
-      if (!joined) { setCtrl('Join a room first.'); return; }
-      grabDJ();
-      socket.emit('add_to_queue', { room_id: roomId, video_id: vid, title });
-      setCtrl('Added to queue: ' + title);
-    }
-  };
-
-  // ── Buttons ──
+  // ── Control buttons ──
   $('ms-create').addEventListener('click', () => {
     myName = $('ms-name').value.trim() || 'Guest';
     initSocket(() => socket.emit('create_room'));
@@ -695,17 +631,17 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
   });
 
   $('ms-play-btn').addEventListener('click', () => {
-    if (!joined) return;
-    if (audio.paused) {
-      audio.play().catch(()=>{});
+    if (!joined || !ytPlayer || !ytReady) return;
+    if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+      ytPlayer.pauseVideo();
     } else {
-      audio.pause();
+      ytPlayer.playVideo();
     }
   });
 
   $('ms-prev-btn').addEventListener('click', () => {
-    if (!joined) return;
-    audio.currentTime = 0;
+    if (!joined || !ytPlayer || !ytReady) return;
+    ytPlayer.seekTo(0, true);
     grabDJ();
     socket.emit('control', { room_id: roomId, action: 'previous', position: 0 });
   });
@@ -718,8 +654,23 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
   $('ms-leave-btn').addEventListener('click', leaveRoom);
 
+  // Auto-fill room code from URL param
   const r = new URLSearchParams(location.search).get('room');
   if (r) $('ms-room').value = r.toUpperCase();
+
+  // ── Exposed to search buttons ──
+  window._room = {
+    load(vid, title) {
+      if (!joined) { setCtrl('Join a room first.'); return; }
+      grabDJ();
+      socket.emit('control', { room_id: roomId, action: 'load', video_id: vid, title, position: 0 });
+    },
+    queue(vid, title) {
+      if (!joined) { setCtrl('Join a room first.'); return; }
+      socket.emit('add_to_queue', { room_id: roomId, video_id: vid, title });
+      setCtrl('Added to queue: ' + title);
+    }
+  };
 })();
 </script>
 </body>

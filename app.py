@@ -6,8 +6,7 @@ import urllib.request
 import urllib.parse
 import json
 
-import yt_dlp
-from flask import Flask, send_from_directory, request, jsonify, redirect
+from flask import Flask, send_from_directory, request, jsonify
 from flask_socketio import SocketIO, emit, join_room
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -134,38 +133,6 @@ def api_search():
 
     return jsonify({"results": results})
 
-
-@app.route("/api/stream/<video_id>")
-def api_stream(video_id):
-    """Extract best audio-only stream URL via yt-dlp and redirect to it.
-    The browser plays the audio directly — no iframe, no embedding restrictions."""
-    if not re.fullmatch(r"[\w-]{11}", video_id):
-        return jsonify({"error": "invalid video id"}), 400
-
-    ydl_opts = {
-        "format":          "bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio",
-        "quiet":           True,
-        "no_warnings":     True,
-        "noplaylist":      True,
-        "skip_download":   True,
-        "cookiefile":      None,
-    }
-
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(
-                f"https://www.youtube.com/watch?v={video_id}",
-                download=False
-            )
-        audio_url = info.get("url") or info.get("formats", [{}])[-1].get("url")
-        if not audio_url:
-            return jsonify({"error": "no stream found"}), 404
-
-        # Redirect browser to the direct CDN audio URL
-        return redirect(audio_url, code=302)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 502
 
 
 @app.route("/<path:filename>")
