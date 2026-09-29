@@ -10,7 +10,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#0d0d0d; color:#e5e5e
 
 /* hearts */
 .hearts-bg { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
-.heart-float { position:absolute; bottom:-60px; opacity:0; animation:floatUp linear infinite; color:rgba(229,0,48,.35); }
+.heart-float { position:absolute; bottom:-60px; opacity:0; animation:floatUp linear infinite; color:rgba(255,107,138,.9); }
 @keyframes floatUp {
   0%   { transform:translateY(0) rotate(0deg); opacity:0; }
   10%  { opacity:1; }
@@ -306,21 +306,40 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 // ── Floating hearts ────────────────────────────────────────────────────────
 (function () {
   const canvas = document.getElementById('heartsCanvas');
-  const syms = ['❤','♥','❤','♥'];
+  // richer set of pink heart symbols
+  const syms = ['❤','♥','💕','💗','💖','💓','💝','❣','♡','💞'];
+  // pink/red colour palette applied via CSS color
+  const colors = [
+    'rgba(255,107,138,0.9)',  // hot pink
+    'rgba(255,60,120,0.85)',  // deep pink
+    'rgba(255,150,180,0.8)',  // light pink
+    'rgba(229,0,48,0.75)',    // red-pink
+    'rgba(255,192,203,0.85)', // pastel pink
+    'rgba(220,80,160,0.8)',   // magenta-pink
+  ];
+
   function spawn() {
     const h = document.createElement('span');
     h.className = 'heart-float';
     h.textContent = syms[Math.floor(Math.random() * syms.length)];
     h.style.left = Math.random() * 100 + 'vw';
-    h.style.fontSize = (.5 + Math.random() * .9) + 'rem';
-    const dur = 9 + Math.random() * 10;
+    // varied sizes — some small, some big
+    h.style.fontSize = (0.7 + Math.random() * 1.8) + 'rem';
+    h.style.color = colors[Math.floor(Math.random() * colors.length)];
+    // no delay on ongoing spawns so they appear immediately
+    h.style.animationDelay = '0s';
+    const dur = 7 + Math.random() * 9;
     h.style.animationDuration = dur + 's';
-    h.style.animationDelay = Math.random() * 4 + 's';
     canvas.appendChild(h);
-    setTimeout(() => h.remove(), (dur + 5) * 1000);
+    setTimeout(() => h.remove(), (dur + 1) * 1000);
   }
-  setInterval(spawn, 1300);
-  for (let i = 0; i < 7; i++) spawn();
+
+  // spawn one every 400ms for dense continuous stream
+  setInterval(spawn, 400);
+  // seed with 20 hearts immediately so the screen isn't empty on load
+  for (let i = 0; i < 20; i++) {
+    setTimeout(spawn, i * 80);
+  }
 })();
 
 // ── Search ─────────────────────────────────────────────────────────────────

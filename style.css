@@ -44,7 +44,7 @@ body {
   height: 100vh;
   background: linear-gradient(to right, rgba(0,0,0,.85) 40%, transparent 100%),
               linear-gradient(to top, rgba(0,0,0,.6) 10%, transparent 60%),
-              url('media/photos/hero.jpg') center/cover no-repeat;
+              url('media/photos/hero.jpg') center/80% no-repeat;
   display: flex;
   align-items: flex-end;
   padding: 0 48px 80px;
