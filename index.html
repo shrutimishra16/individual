@@ -17,13 +17,16 @@
 <!-- Navbar -->
 <header class="navbar">
   <div class="logo">❤ OBSESSION</div>
-  <nav>
-    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Home</a>
-    <a href="#episodes" onclick="smoothScroll('episodes');return false;">Episodes</a>
-    <a href="#open-when" onclick="smoothScroll('open-when');return false;">Memories</a>
+  <nav id="main-nav">
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});closeNav();return false;">Home</a>
+    <a href="#episodes" onclick="smoothScroll('episodes');closeNav();return false;">Episodes</a>
+    <a href="#open-when" onclick="smoothScroll('open-when');closeNav();return false;">Memories</a>
     <a href="music.html">Music</a>
   </nav>
   <div class="nav-right"></div>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- Hero Banner -->
@@ -51,7 +54,7 @@
   <h2>Season 1 — How We Met</h2>
   <div class="cards">
     <div class="card" onclick="showEpisode('First Message','This is where it all began. A single message that changed everything. You probably had no idea what you were starting. ❤️')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s1e1.jpg" alt="First Message">
       <div class="card-overlay">
         <span class="card-ep">S1 · E1</span>
         <span class="card-title">First Message</span>
@@ -62,7 +65,7 @@
       </div>
     </div>
     <div class="card" onclick="showEpisode('First Call','The first long conversation that went way past midnight. Neither of you wanted to hang up.')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s1e2.jpg" alt="First Call">
       <div class="card-overlay">
         <span class="card-ep">S1 · E2</span>
         <span class="card-title">First Call</span>
@@ -73,7 +76,7 @@
       </div>
     </div>
     <div class="card" onclick="showEpisode('First Date','A day worth replaying forever. Every detail was perfect, even the nervous parts. 🌹')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s1e3.jpg" alt="First Date">
       <div class="card-overlay">
         <span class="card-ep">S1 · E3</span>
         <span class="card-title">First Date</span>
@@ -90,7 +93,7 @@
   <h2>Season 2 — Falling For Each Other</h2>
   <div class="cards">
     <div class="card" onclick="showEpisode('Inside Jokes','The jokes nobody else understands. The ones that make you both burst out laughing at the wrong moment. 😄')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s2e1.jpg" alt="Inside Jokes">
       <div class="card-overlay">
         <span class="card-ep">S2 · E1</span>
         <span class="card-title">Inside Jokes</span>
@@ -101,7 +104,7 @@
       </div>
     </div>
     <div class="card" onclick="showEpisode('Cute Moments','Tiny moments that felt huge. A look, a touch, a smile that said everything without a single word. 💕')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s2e2.jpg" alt="Cute Moments">
       <div class="card-overlay">
         <span class="card-ep">S2 · E2</span>
         <span class="card-title">Cute Moments</span>
@@ -112,7 +115,7 @@
       </div>
     </div>
     <div class="card" onclick="showEpisode('The Confession','The moment everything became real. Hearts racing, hands trembling, three words that changed the world. ❤️')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s2e3.jpg" alt="The Confession">
       <div class="card-overlay">
         <span class="card-ep">S2 · E3</span>
         <span class="card-title">The Confession</span>
@@ -129,7 +132,7 @@
   <h2>Season 5 — The Future</h2>
   <div class="cards">
     <div class="card" onclick="showEpisode('Wedding Day','One day this becomes real. The best day of our lives, surrounded by everyone we love. 💍')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s5e1.jpg" alt="Wedding Day">
       <div class="card-overlay">
         <span class="card-ep">S5 · E1</span>
         <span class="card-title">Wedding Day</span>
@@ -140,7 +143,7 @@
       </div>
     </div>
     <div class="card" onclick="showEpisode('Our Home','A cozy place filled with warmth, love, and the soft glow of a life built together. 🏠')">
-      <img class="card-bg" src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=300&q=60" alt="">
+      <img class="card-bg" src="media/photos/s5e2.jpg" alt="Our Home">
       <div class="card-overlay">
         <span class="card-ep">S5 · E2</span>
         <span class="card-title">Our Home</span>
@@ -240,5 +243,24 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  // ── Hamburger menu ──
+  const hamburger = document.getElementById('nav-hamburger');
+  const mainNav   = document.getElementById('main-nav');
+  function closeNav() {
+    hamburger.classList.remove('open');
+    mainNav.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+  hamburger.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+  // close on outside tap
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.navbar')) closeNav();
+  });
+</script>
 </body>
 </html>

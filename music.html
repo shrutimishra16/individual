@@ -22,11 +22,18 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#0d0d0d; color:#e5e5e
 ::-webkit-scrollbar-thumb { background:#e50030; border-radius:3px; }
 
 /* navbar */
-.navbar { position:fixed; top:0; left:0; right:0; z-index:999; display:flex; align-items:center; padding:16px 48px; background:linear-gradient(to bottom,rgba(0,0,0,.95),transparent); gap:32px; }
-.navbar .logo { font-size:1.9rem; font-weight:900; letter-spacing:2px; color:#e50030; text-shadow:0 0 20px rgba(229,0,48,.5); text-decoration:none; }
+.navbar { position:fixed; top:0; left:0; right:0; z-index:999; display:flex; align-items:center; flex-wrap:wrap; padding:16px 48px; background:rgba(0,0,0,.97); gap:32px; }
+.navbar .logo { font-size:1.9rem; font-weight:900; letter-spacing:2px; color:#e50030; text-shadow:0 0 20px rgba(229,0,48,.5); text-decoration:none; flex:1; }
 .navbar nav { display:flex; gap:20px; }
 .navbar nav a { color:#ccc; text-decoration:none; font-size:.9rem; transition:color .2s; }
 .navbar nav a:hover, .navbar nav a.active { color:#fff; }
+
+/* hamburger */
+.nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; cursor:pointer; background:none; border:none; padding:4px; margin-left:auto; }
+.nav-hamburger span { display:block; width:22px; height:2px; background:#e5e5e5; border-radius:2px; transition:all .3s; }
+.nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity:0; }
+.nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 
 /* page */
 .music-page { position:relative; z-index:1; padding:110px 48px 80px; max-width:860px; margin:0 auto; }
@@ -154,7 +161,15 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
 @media (max-width:600px) {
   .music-page { padding:90px 18px 60px; }
-  .navbar { padding:14px 18px; }
+  .navbar { padding:14px 20px; gap:0; }
+  .nav-hamburger { display:flex; }
+  .navbar nav {
+    display:none; flex-direction:column; width:100%; gap:0;
+    padding:8px 0 12px; border-top:1px solid rgba(255,255,255,.08); margin-top:8px;
+  }
+  .navbar nav.open { display:flex; }
+  .navbar nav a { padding:12px 4px; font-size:1rem; border-bottom:1px solid rgba(255,255,255,.05); }
+  .navbar nav a:last-child { border-bottom:none; }
   .ms-room-header { flex-direction:column; }
   .ms-code-box { width:100%; }
   .ms-panel { padding:18px; }
@@ -169,12 +184,15 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
 
 <header class="navbar">
   <a class="logo" href="index.html">OBSESSION</a>
-  <nav>
+  <nav id="main-nav">
     <a href="index.html">Home</a>
     <a href="index.html#episodes">Episodes</a>
     <a href="index.html#open-when">Memories</a>
     <a href="music.html" class="active">Music</a>
   </nav>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <main class="music-page">
@@ -672,6 +690,23 @@ input[type=range].volume-slider::-webkit-slider-thumb { -webkit-appearance:none;
     }
   };
 })();
+</script>
+<script>
+  // ── Hamburger menu ──
+  const hamburger = document.getElementById('nav-hamburger');
+  const mainNav   = document.getElementById('main-nav');
+  hamburger.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.navbar')) {
+      hamburger.classList.remove('open');
+      mainNav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  });
 </script>
 </body>
 </html>

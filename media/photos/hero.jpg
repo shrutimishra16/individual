@@ -1,0 +1,8 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="300" height="170" viewBox="0 0 300 170">
+  <rect width="300" height="170" fill="#1a0a0f"/>
+  <rect x="1" y="1" width="298" height="168" fill="none" stroke="#e50030" stroke-width="1" stroke-dasharray="6,4" rx="4"/>
+  <text x="150" y="72" font-family="Arial" font-size="32" fill="#e50030" text-anchor="middle">❤</text>
+  <text x="150" y="100" font-family="Arial" font-size="13" font-weight="bold" fill="#ff6b8a" text-anchor="middle">Hero Banner</text>
+  <text x="150" y="120" font-family="Arial" font-size="10" fill="#554455" text-anchor="middle">Replace with your photo</text>
+  <text x="150" y="136" font-family="Arial" font-size="9" fill="#443344" text-anchor="middle">media/photos/hero.jpg</text>
+</svg>

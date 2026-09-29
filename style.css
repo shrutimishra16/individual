@@ -44,7 +44,7 @@ body {
   height: 100vh;
   background: linear-gradient(to right, rgba(0,0,0,.85) 40%, transparent 100%),
               linear-gradient(to top, rgba(0,0,0,.6) 10%, transparent 60%),
-              url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1600') center/cover no-repeat;
+              url('media/photos/hero.jpg') center/cover no-repeat;
   display: flex;
   align-items: flex-end;
   padding: 0 48px 80px;
@@ -363,11 +363,64 @@ body {
 ::-webkit-scrollbar-track { background: #111; }
 ::-webkit-scrollbar-thumb { background: #e50030; border-radius: 3px; }
 
-/* ── Responsive ── */
+/* ── Hamburger button (hidden on desktop) ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  margin-left: auto;
+  z-index: 1001;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #e5e5e5;
+  border-radius: 2px;
+  transition: all .3s;
+}
+/* animated X when open */
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile nav drawer ── */
 @media (max-width: 600px) {
+  .navbar {
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    background: rgba(0,0,0,.97);
+  }
+  .navbar .logo { flex: 1; }
+  .nav-hamburger { display: flex; }
+  .navbar nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    padding: 8px 0 12px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    margin-top: 8px;
+  }
+  .navbar nav.open { display: flex; }
+  .navbar nav a {
+    padding: 12px 4px;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .navbar nav a:last-child { border-bottom: none; }
+  .navbar .nav-right { display: none; }
+
+  /* rest of responsive */
   .hero h1 { font-size: 2.5rem; }
   .section { padding: 16px 20px 32px; }
-  .navbar { padding: 14px 20px; }
   .hero { padding: 0 20px 60px; }
   .card { min-width: 150px; height: 90px; }
 }
