@@ -318,28 +318,28 @@ const BDAY_CONFIG = {
 
   <!-- SLIDE 0: Hey you -->
   <div class="bday-slide active" id="bday-s0">
-    <div class="bday-hey">Hey you... ❤️</div>
-    <div class="bday-sub">Someone has a little surprise for you...</div>
+    <div class="bday-hey">RAM RAM... ❤️</div>
+    <div class="bday-sub">Your non-tech girlfriend tried a little something for you...</div>
   </div>
 
   <!-- SLIDE 1: Because today -->
   <div class="bday-slide" id="bday-s1">
     <span class="bday-cake">🎂</span>
     <div class="bday-hey" style="font-size:clamp(1.4rem,5vw,2.8rem)">Because today is YOUR day.</div>
-    <div class="bday-sub" style="margin-top:8px">The whole universe knew it was coming.</div>
+    <div class="bday-sub" style="margin-top:8px">Never been this excited for apna birthday.</div>
   </div>
 
   <!-- SLIDE 2: Happy Birthday NAME -->
   <div class="bday-slide" id="bday-s2">
     <div class="bday-sub" style="margin-bottom:14px;font-size:clamp(.9rem,2.5vw,1.1rem);letter-spacing:.12em;text-transform:uppercase">Happy Birthday</div>
     <div class="bday-name">${BDAY_CONFIG.NAME} ❤️</div>
-    <div class="bday-made">I made something special just for you...</div>
+    <div class="bday-made">I tried something in your love language...</div>
   </div>
 
   <!-- SLIDE 3: Video (conditional) -->
   ${hasVideo ? `
   <div class="bday-slide" id="bday-s3">
-    <div class="bday-video-label">First... a little message from me to you ❤️</div>
+    <div class="bday-video-label">First... a chota video from me to you ❤️</div>
     <div class="bday-video-wrap" id="bday-vwrap">
       ${BDAY_CONFIG.VIDEO_URL.includes("youtube") || BDAY_CONFIG.VIDEO_URL.includes("youtu.be")
         ? `<iframe src="${toEmbedUrl(BDAY_CONFIG.VIDEO_URL)}" allow="autoplay; fullscreen" allowfullscreen></iframe>`
@@ -362,7 +362,7 @@ const BDAY_CONFIG = {
 
   <!-- SLIDE 5 (or 4): Ready? interaction -->
   <div class="bday-slide" id="bday-s${hasVideo ? 5 : 4}">
-    <div class="bday-question">Ready to see what I made for you?</div>
+    <div class="bday-question">Are you excited</div>
     <div class="bday-choice-btns">
       <button class="bday-choice yes" id="bday-yes">YES ❤️</button>
       <button class="bday-choice obv" id="bday-obv">Obviously 😌</button>
