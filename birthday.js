@@ -13,13 +13,14 @@ const BDAY_CONFIG = {
 
   // ── ITINERARY ── edit times and activities below ──────────────────────
   ITINERARY: [
-    { time: "10:00 AM", icon: "🌸", title: "Be Ready, My Love",   desc: "Dress up — you deserve to look like the birthday king you are." },
-    { time: "11:00 AM", icon: "☕", title: "Morning Date",         desc: "Coffee & breakfast, just the two of us. Our usual spot." },
-    { time: "01:00 PM", icon: "🌹", title: "A Surprise Detour",   desc: "I'm not telling. Just trust me and get in the car." },
-    { time: "03:30 PM", icon: "🎁", title: "Gift Time",           desc: "Yes there's a gift. No you cannot guess. Yes it's cute." },
-    { time: "06:00 PM", icon: "🌅", title: "Golden Hour Walk",    desc: "Just us, the sunset, and absolutely no phones. Okay maybe one photo." },
-    { time: "08:00 PM", icon: "🍽️", title: "Dinner",              desc: "Your favourite place. Candles, music, the whole shebang." },
-    { time: "10:00 PM", icon: "🎂", title: "Cake & Wishes",       desc: "Make a wish. I already know what mine is — it's you, always." },
+    { time: "09:30 AM", icon: "🌸", title: "Be Ready, My Love",   desc: "Dress up hoke meet me at NSP, u can also be late today. Aj maaf hai tumhhe" },
+    { time: "10:00 AM", icon: "☕", title: "Monestary visit",     desc: "Monestary is the new mandir." },
+    { time: "10:30 AM", icon: "🌹", title: "Photobooth",   desc: "We will click sundr sundr pics, this time maybe thoda kam shy." },
+    { time: "11:00 PM", icon: "🎁", title: "Breakfast and market stall",           desc: "Majnu ke tila mai ek do chize try karenge light hi" },
+    { time: "12:00 noon", icon: "🌅", title: "Nehru planetarium",    desc: "We will leave for Nehru planatarium show" },
+    { time: "2:30 PM", icon: "🍽️", title: "Lunch",              desc: "No fancy restaurants this time. Koi acha north indian lunch we will have" },
+    { time: "3:30 PM", icon: "🎂", title: "Bowling and deserts",       desc: "We will end ur day apko bowling mai beat krke" },
+    { time: "4:30 PM", icon: "🎂", title: "Hugs and kisses",       desc: "Farewell hugs and mat jao mayt jao ka rona" },
   ],
 };
 /* ─────────────────────────────────────────────────────────────────────── */
@@ -502,8 +503,8 @@ const BDAY_CONFIG = {
 
         <div class="invite-note">
           Dear ${BDAY_CONFIG.NAME.split(":").pop().trim()}, today is entirely yours.
-          I have planned every moment of this day with all my love.
-          Please dress up, show up, and just let yourself be celebrated. ❤️
+          I have tried planning thoda thoda which I doubt will be executed but tried making an itineary.
+          Please show up to your celebration. ❤️
         </div>
 
         <ul class="invite-items">
