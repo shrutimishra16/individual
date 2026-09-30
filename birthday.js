@@ -621,6 +621,7 @@ const BDAY_CONFIG = {
     setTimeout(() => {
       overlay.remove();
       document.documentElement.style.overflow = "";
+      window.scrollTo({ top: 0, behavior: "instant" });
     }, 950);
   });
 
