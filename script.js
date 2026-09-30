@@ -1,6 +1,15 @@
-function showEpisode(title, text) {
+function showEpisode(title, text, imgSrc) {
   document.getElementById('title').innerText = title;
   document.getElementById('content').innerText = text;
+  const img = document.getElementById('modal-img');
+  if (imgSrc) {
+    img.src = imgSrc;
+    img.alt = title;
+    img.style.display = 'block';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+  }
   document.getElementById('modal').classList.add('active');
 }
 

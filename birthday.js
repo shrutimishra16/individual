@@ -138,32 +138,60 @@ const BDAY_CONFIG = {
     100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
   }
 
-  /* video */
-  .bday-video-label { font-size: clamp(.9rem, 2.5vw, 1.1rem); color: rgba(255,255,255,.5); margin-bottom: 18px; letter-spacing: .08em; }
-  .bday-video-wrap {
-    position: relative; width: min(540px, 90vw); aspect-ratio: 16/9;
-    border-radius: 18px; overflow: hidden;
-    box-shadow: 0 0 60px rgba(255,60,120,.35), 0 0 0 2px rgba(255,100,150,.25);
-    background: #100010; margin-bottom: 22px;
-  }
-  .bday-video-wrap video, .bday-video-wrap iframe { width:100%; height:100%; border:none; display:block; }
-  .bday-video-wrap .bday-play-overlay {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; background: rgba(0,0,0,.4); transition: opacity .3s;
-  }
-  .bday-video-wrap .bday-play-overlay.hidden { opacity:0; pointer-events:none; }
-  .bday-play-circle {
-    width: 70px; height: 70px; border-radius: 50%;
-    background: linear-gradient(135deg, #ff6b8a, #c850c0);
+  /* ── photo wish slide ── */
+  .bday-photo-slide { padding: 0 !important; }
+  .bday-photo-wrap {
+    position: relative;
+    width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; color: #fff; box-shadow: 0 0 30px rgba(255,60,120,.6); transition: transform .2s;
+    overflow: hidden;
   }
-  .bday-play-circle:hover { transform: scale(1.1); }
-  .bday-skip {
-    font-size:.8rem; color:rgba(255,255,255,.3); cursor:pointer;
-    border:none; background:transparent; text-decoration:underline; margin-top:6px; transition:color .2s;
+  .bday-photo-wrap img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
   }
-  .bday-skip:hover { color:rgba(255,255,255,.6); }
+  /* dark vignette so text is readable over the photo */
+  .bday-photo-wrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,.15) 0%,
+      transparent 25%,
+      transparent 55%,
+      rgba(0,0,0,.75) 100%
+    );
+    pointer-events: none;
+  }
+  .bday-photo-wish {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 24px 32px;
+    text-align: center;
+    z-index: 2;
+  }
+  .bday-photo-wish h2 {
+    font-size: clamp(1.4rem, 5vw, 2.6rem);
+    font-weight: 900; line-height: 1.2;
+    background: linear-gradient(135deg, #fff 40%, #ffb3c8, #ffd700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-shadow: none;
+    margin-bottom: 6px;
+  }
+  .bday-photo-wish p {
+    font-size: clamp(.85rem, 2.5vw, 1.1rem);
+    color: rgba(255,255,255,.8);
+    font-style: italic;
+  }
+  .bday-photo-skip {
+    position: absolute; bottom: 14px; right: 18px;
+    font-size:.75rem; color:rgba(255,255,255,.35);
+    cursor:pointer; border:none; background:transparent;
+    text-decoration:underline; z-index: 3; transition:color .2s;
+  }
+  .bday-photo-skip:hover { color:rgba(255,255,255,.7); }
 
   /* choice */
   .bday-question { font-size: clamp(1.4rem, 5vw, 2.2rem); font-weight: 800; color: #fff; margin-bottom: 30px; line-height: 1.3; }
@@ -376,7 +404,9 @@ const BDAY_CONFIG = {
   document.head.appendChild(style);
 
   /* ── 4. Build itinerary HTML ── */
-  const hasVideo = BDAY_CONFIG.VIDEO_URL.trim() !== "";
+  // Photo slide is always shown (replaces video)
+  const S = { photo:3, ready:4, choice:5, invite:6, enter:7 };
+  const totalSlides = 8;
 
   const itineraryHTML = BDAY_CONFIG.ITINERARY.map(item => `
     <li class="invite-item">
@@ -390,24 +420,6 @@ const BDAY_CONFIG = {
         <div class="invite-item-desc">${item.desc}</div>
       </div>
     </li>`).join("");
-
-  /* ── Slide index map ──
-     0  Hey you           (auto 5s)
-     1  Because today     (auto 5s)
-     2  Happy Birthday    (auto 5s)
-     3  Video*            (manual — video/skip)
-     4  Okay ready        (auto 5s)
-     5  Ready? choice     (manual)
-     6  Itinerary invite  (manual — CTA button)
-     7  Enter             (manual — enter button)
-
-     * slides 3-7 shift down by 1 when no video
-  */
-  const S = hasVideo
-    ? { vid:3, ready:4, choice:5, invite:6, enter:7 }
-    : {        ready:3, choice:4, invite:5, enter:6  };
-
-  const totalSlides = hasVideo ? 8 : 7;
 
   const overlay = document.createElement("div");
   overlay.id = "bday-overlay";
@@ -436,22 +448,17 @@ const BDAY_CONFIG = {
     <div class="bday-made">I tried something in your love language...</div>
   </div>
 
-  <!-- SLIDE 3: Video (conditional) -->
-  ${hasVideo ? `
-  <div class="bday-slide" id="bday-s${S.vid}">
-    <div class="bday-video-label">First... a chota video from me to you ❤️</div>
-    <div class="bday-video-wrap" id="bday-vwrap">
-      ${BDAY_CONFIG.VIDEO_URL.includes("youtube") || BDAY_CONFIG.VIDEO_URL.includes("youtu.be")
-        ? `<iframe src="${toEmbedUrl(BDAY_CONFIG.VIDEO_URL)}" allow="autoplay; fullscreen" allowfullscreen></iframe>`
-        : `<video id="bday-vid" src="${BDAY_CONFIG.VIDEO_URL}" playsinline></video>
-           <div class="bday-play-overlay" id="bday-play-overlay">
-             <div class="bday-play-circle">&#9654;</div>
-           </div>`
-      }
+  <!-- SLIDE 3: Birthday photo wish -->
+  <div class="bday-slide bday-photo-slide" id="bday-s${S.photo}">
+    <div class="bday-photo-wrap">
+      <img src="media/photos/bday.jpeg" alt="Happy Birthday">
+      <div class="bday-photo-wish">
+        <h2>🎂 Many Many Returns of the Day 🎂</h2>
+        <p>Wishing you all the love, joy and cake in the world ❤️</p>
+      </div>
     </div>
-    <button class="bday-skip" id="bday-skip-video">Skip video →</button>
+    <button class="bday-photo-skip" id="bday-photo-skip">Continue →</button>
   </div>
-  ` : ""}
 
   <!-- Okay ready -->
   <div class="bday-slide" id="bday-s${S.ready}">
@@ -543,9 +550,7 @@ const BDAY_CONFIG = {
   }
 
   /* ── 6. Slide engine ── */
-  const manualSlides = hasVideo
-    ? new Set([S.vid, S.choice, S.invite, S.enter])
-    : new Set([S.choice, S.invite, S.enter]);
+  const manualSlides = new Set([S.photo, S.choice, S.invite, S.enter]);
 
   let current = 0;
   let autoTimer = null;
@@ -569,21 +574,8 @@ const BDAY_CONFIG = {
   }
   goTo(0);
 
-  /* ── Video wiring ── */
-  if (hasVideo) {
-    const isYT = BDAY_CONFIG.VIDEO_URL.includes("youtube") || BDAY_CONFIG.VIDEO_URL.includes("youtu.be");
-    if (!isYT) {
-      const vid = document.getElementById("bday-vid");
-      const po  = document.getElementById("bday-play-overlay");
-      if (vid && po) {
-        po.addEventListener("click", () => { vid.play(); po.classList.add("hidden"); });
-        vid.addEventListener("pause", () => { if (!vid.ended) po.classList.remove("hidden"); });
-        vid.addEventListener("ended", () => goTo(S.ready));
-      }
-    }
-    const skipBtn = document.getElementById("bday-skip-video");
-    if (skipBtn) skipBtn.addEventListener("click", () => goTo(S.ready));
-  }
+  /* ── Photo slide skip button ── */
+  document.getElementById("bday-photo-skip").addEventListener("click", () => goTo(S.ready));
 
   /* ── Choice buttons ── */
   function onChoice() {
