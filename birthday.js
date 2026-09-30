@@ -244,11 +244,31 @@ const BDAY_CONFIG = {
   ══════════════════════════════════════════════ */
   .bday-invite-slide {
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     align-items: center;
     justify-content: flex-start;
     padding: 20px 16px 80px;
+    /* position:absolute + inset:0 gives us the dimensions,
+       but we need an explicit height for overflow-y to kick in */
+    height: 100%;
+    display: block;        /* switch from flex so block scroll works */
   }
+
+  /* re-center the card inside the now-block slide */
+  .bday-invite-slide .bday-invite-card {
+    margin: 0 auto;
+  }
+  .bday-invite-slide .invite-cta {
+    display: block;
+    margin: 22px auto 0;
+  }
+
+  /* pink scrollbar for the invite slide */
+  .bday-invite-slide::-webkit-scrollbar { width: 4px; }
+  .bday-invite-slide::-webkit-scrollbar-track { background: transparent; }
+  .bday-invite-slide::-webkit-scrollbar-thumb { background: rgba(255,107,138,.5); border-radius: 2px; }
+  .bday-invite-slide { scrollbar-width: thin; scrollbar-color: rgba(255,107,138,.5) transparent; }
 
   .bday-invite-card {
     position: relative;
